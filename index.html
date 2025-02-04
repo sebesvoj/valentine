@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Be My Valentine?</title>
+  <style>
+    body {
+      background-color: #ffe4e6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 300px;
+      position: relative;
+      z-index: 2;
+    }
+    h1, .message {
+      color: #d6336c;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .button {
+      background-color: #d6336c;
+      color: white;
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .button:hover {
+      transform: scale(1.1);
+    }
+    .button.no {
+      background-color: #adb5bd;
+      opacity: 0.9;
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .emoji, .happy-photo {
+      position: absolute;
+      animation: float 3s linear infinite;
+      pointer-events: none;
+    }
+    .emoji {
+      font-size: 24px;
+    }
+    .happy-photo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('sad.png') center/cover no-repeat;
+      z-index: 3;
+      display: none;
+    }
+    @keyframes float {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-150px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+  <div class="card">
+    <h1 id="main-question">Will you be my Valentine?</h1>
+    <button class="button yes" onclick="showMessage('yes')">Ano</button>
+    <button class="button no" onclick="showMessage('no')" id="noButton">Ne</button>
+    <p class="message" id="message"></p>
+  </div>
+
+  <script>
+    function showMessage(answer) {
+      const messageElement = document.getElementById('message');
+      const noButton = document.getElementById('noButton');
+      const overlay = document.getElementById('overlay');
+
+      if (answer === 'yes') {
+        messageElement.textContent = 'Děkuji bobulko! ❤️';
+        triggerEmojiExplosion();
+        triggerHappyPhotos();
+      } else {
+        messageElement.textContent = 'Ty nechceš být má bobulka?';
+
+        // Gradually fade out the 'Ne' button
+        const currentOpacity = parseFloat(window.getComputedStyle(noButton).opacity);
+        if (currentOpacity > 0) {
+          noButton.style.opacity = currentOpacity - 0.1;
+          if (noButton.style.opacity <= 0) {
+            noButton.style.display = 'none';
+          }
+        }
+
+        // Show sad image overlay for 1.5 seconds
+        overlay.style.display = 'block';
+
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 1500);
+      }
+    }
+
+    function triggerEmojiExplosion() {
+      const emojis = ['❤️', '🎉', '💖', '💕', '✨'];
+      for (let i = 0; i < 30; i++) {
+        const emoji = document.createElement('div');
+        emoji.classList.add('emoji');
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * 100 + 'vw';
+        emoji.style.top = Math.random() * 100 + 'vh';
+        document.body.appendChild(emoji);
+
+        setTimeout(() => {
+          emoji.remove();
+        }, 3000);
+      }
+    }
+
+    function triggerHappyPhotos() {
+      for (let i = 0; i < 20; i++) {
+        const photo = document.createElement('img');
+        photo.src = 'happy.png';
+        photo.classList.add('happy-photo');
+        photo.style.left = Math.random() * 100 + 'vw';
+        photo.style.top = Math.random() * 100 + 'vh';
+        document.body.appendChild(photo);
+
+        setTimeout(() => {
+          photo.remove();
+        }, 3000);
+      }
+    }
+  </script>
+</body>
+</html>
