@@ -72,7 +72,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('sad.png') center/cover no-repeat;
+      background: url('sad.png') center/contain no-repeat;
+      background-size: contain;
+      background-position: center;
       z-index: 3;
       display: none;
     }
@@ -96,6 +98,7 @@
       const messageElement = document.getElementById('message');
       const noButton = document.getElementById('noButton');
       const overlay = document.getElementById('overlay');
+      const originalBgColor = document.body.style.backgroundColor;
 
       if (answer === 'yes') {
         messageElement.textContent = 'Děkuji bobulko! ❤️';
@@ -113,11 +116,13 @@
           }
         }
 
-        // Show sad image overlay for 1.5 seconds
+        // Change background color and show sad image overlay for 1.5 seconds
+        document.body.style.backgroundColor = '#ffffff';
         overlay.style.display = 'block';
 
         setTimeout(() => {
           overlay.style.display = 'none';
+          document.body.style.backgroundColor = originalBgColor;
         }, 1500);
       }
     }
